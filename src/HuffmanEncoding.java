@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.*;
 
 public class HuffmanEncoding implements TreeGenerator,EncoderInterface{
@@ -34,7 +32,7 @@ public class HuffmanEncoding implements TreeGenerator,EncoderInterface{
         }
         Node root=null;
         while(q.size()>1) {
-            System.out.println(q);
+            //System.out.println(q);
             Node left=q.poll();
             Node right=q.poll();
 
@@ -80,18 +78,46 @@ public class HuffmanEncoding implements TreeGenerator,EncoderInterface{
                 String line = s.nextLine();
                 for (char ch : line.toCharArray()) {
                     ByteArr+=TreeMap.get(ch);
-                    //System.out.println(ByteArr+" "+CurrentByte);
                     if(ByteArr.length()>8){
                         CurrentByte=ByteArr.substring(0,8);
                         ByteArr=ByteArr.substring(8);
+                        System.out.println(CurrentByte);
                         byte b = (byte) Integer.parseInt(CurrentByte, 2);
                         fout.write(b);
                     }
                 }
             }
+            while(ByteArr.length()>=8) {
+                CurrentByte = ByteArr.substring(0, 8);
+                ByteArr = ByteArr.substring(8);
+                System.out.println(CurrentByte);
+                byte b = (byte) Integer.parseInt(CurrentByte, 2);
+                fout.write(b);
+            }
+            if(ByteArr.length()>0){
+                CurrentByte=String.format("%1$-" + 8 + "s", ByteArr).replace(' ', '0');
+                ByteArr="";
+                System.out.println(CurrentByte);
+                byte b = (byte) Integer.parseInt(CurrentByte, 2);
+                fout.write(b);
+            }
             fout.close();
         }
         catch (Exception e){System.out.println(e);}
         s.close();
+    }
+
+    @Override
+    public void StoreMap(HashMap<Character, Integer> FreqMap) {
+        try{
+            FileWriter mapfile=new FileWriter("Key.txt");
+            for(Map.Entry<Character, Integer> entry:FreqMap.entrySet()) {
+                mapfile.write(entry.getKey()+" "+entry.getValue()+"\n");
+        }
+        mapfile.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
