@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -62,10 +63,12 @@ public class HuffmanDecoding implements TreeGenerator,DecoderInterface{
     }
 
     @Override
-    public void DecodeText(Node Tree, String filename) {
+    public void DecodeText(Node Tree, String filename,long count) {
         try {
             File compressed=new File(filename);
             FileInputStream input = new FileInputStream(compressed);
+            File output=new File("Decompressed.txt");
+            FileWriter out=new FileWriter(output);
             byte[] arr = new byte[(int)compressed.length()];
             input.read(arr);
             input.close();
@@ -77,6 +80,7 @@ public class HuffmanDecoding implements TreeGenerator,DecoderInterface{
             int curbyte=0;
             Node root=Tree;
             byte b=arr[curbyte];
+            int chars=0;
             CurrentByte=String.format("%8s", Integer.toBinaryString((b + 256) % 256))
                     .replace(' ', '0');
             while(curbyte<(int)compressed.length()){
@@ -97,11 +101,23 @@ public class HuffmanDecoding implements TreeGenerator,DecoderInterface{
                         root = root.Right;
                     }
                 }
-                System.out.print(root.Char);
+                out.write(root.Char);
+                chars++;
+                if(chars==count){break;}
                 root=Tree;
             }
+            out.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public long getCount(HashMap<Character, Integer> Map) {
+        long count=0;
+        for(Map.Entry<Character, Integer> entry:Map.entrySet()){
+            count+=entry.getValue();
+        }
+        return count;
     }
 }

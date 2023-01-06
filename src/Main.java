@@ -23,9 +23,10 @@ public class Main{
         demo.StoreMap(FreqMap);
         HuffmanDecoding decode=new HuffmanDecoding();
         HashMap<Character,Integer> DecodeMap=decode.InitialiseMap("Key.txt");
+        long count=decode.getCount(DecodeMap);
         Node DecodeTree=decode.InitialiseTree(FreqMap);
         System.out.print("\n");
-        decode.DecodeText(DecodeTree,"Compressed.txt ");
+        decode.DecodeText(DecodeTree,"Compressed.txt ",count);
 
     }
 
