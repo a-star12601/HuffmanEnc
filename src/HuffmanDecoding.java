@@ -16,6 +16,10 @@ public class HuffmanDecoding implements TreeGenerator,DecoderInterface{
         HashMap<Character,Integer> map=new HashMap<>();
         while(s.hasNextLine()) {
             String line = s.nextLine();
+            if(line.substring(0,2).equals("\\n")){
+                map.put('\n',Integer.parseInt(line.substring(3)));
+            }
+            else
             map.put(line.charAt(0),Integer.parseInt(line.substring(2)));
         }
         s.close();
@@ -69,13 +73,13 @@ public class HuffmanDecoding implements TreeGenerator,DecoderInterface{
             FileInputStream input = new FileInputStream(compressed);
             File output=new File("Decompressed.txt");
             FileWriter out=new FileWriter(output);
-            byte[] arr = new byte[(int)compressed.length()];
+            byte[] arr = new byte[(int)compressed.length()+1];
             input.read(arr);
             input.close();
-            for(byte b:arr){
-                System.out.println(String.format("%8s", Integer.toBinaryString((b + 256) % 256))
-                        .replace(' ', '0'));
-            }
+//            for(byte b:arr){
+//                System.out.println(String.format("%8s", Integer.toBinaryString((b + 256) % 256))
+//                        .replace(' ', '0'));
+//            }
             String CurrentByte;
             int curbyte=0;
             Node root=Tree;
@@ -101,14 +105,18 @@ public class HuffmanDecoding implements TreeGenerator,DecoderInterface{
                         root = root.Right;
                     }
                 }
-                out.write(root.Char);
+                if(root.Char=='\n')
+                    out.write("\n");
+                else
+                    out.write(root.Char);
                 chars++;
-                if(chars==count){break;}
+                if(chars==count-1){break;}
                 root=Tree;
             }
+            System.out.println(chars+" "+count);
             out.close();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 

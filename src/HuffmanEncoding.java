@@ -10,9 +10,11 @@ public class HuffmanEncoding implements TreeGenerator,EncoderInterface{
         while(s.hasNextLine()) {
             String line = s.nextLine();
             for (char ch : line.toCharArray()) {
-                int count = map.containsKey(ch) ? map.get(ch) : 0;
+                int count = map.getOrDefault(ch, 0);
                 map.put(ch, count + 1);
             }
+            int nl= map.getOrDefault('\n', 0);
+            map.put('\n', nl + 1);
         }
         s.close();
         return map;
@@ -81,23 +83,24 @@ public class HuffmanEncoding implements TreeGenerator,EncoderInterface{
                     if(ByteArr.length()>8){
                         CurrentByte=ByteArr.substring(0,8);
                         ByteArr=ByteArr.substring(8);
-                        System.out.println(CurrentByte);
+                        //System.out.println(CurrentByte);
                         byte b = (byte) Integer.parseInt(CurrentByte, 2);
                         fout.write(b);
                     }
                 }
+                ByteArr+=TreeMap.get('\n');
             }
             while(ByteArr.length()>=8) {
                 CurrentByte = ByteArr.substring(0, 8);
                 ByteArr = ByteArr.substring(8);
-                System.out.println(CurrentByte);
+                //System.out.println(CurrentByte);
                 byte b = (byte) Integer.parseInt(CurrentByte, 2);
                 fout.write(b);
             }
             if(ByteArr.length()>0){
                 CurrentByte=String.format("%1$-" + 8 + "s", ByteArr).replace(' ', '0');
                 ByteArr="";
-                System.out.println(CurrentByte);
+                //System.out.println(CurrentByte);
                 byte b = (byte) Integer.parseInt(CurrentByte, 2);
                 fout.write(b);
             }
@@ -112,6 +115,10 @@ public class HuffmanEncoding implements TreeGenerator,EncoderInterface{
         try{
             FileWriter mapfile=new FileWriter("Key.txt");
             for(Map.Entry<Character, Integer> entry:FreqMap.entrySet()) {
+                if(entry.getKey()=='\n'){
+                    mapfile.write("\\n "+entry.getValue()+"\n");
+                }
+                else
                 mapfile.write(entry.getKey()+" "+entry.getValue()+"\n");
         }
         mapfile.close();
