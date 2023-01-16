@@ -1,11 +1,26 @@
 import java.io.*;
 import java.util.*;
 
+/**
+ * Class for performing Huffman Encoding.
+ */
 public class HuffmanEncoding extends FileOperations implements TreeGenerator,EncoderInterface {
 
+    /**
+     * Hashmap storing character frequencies.
+     */
     HashMap<Character,Integer> map=new HashMap<>();
+    /**
+     * Data Structure for storing the Huffman Tree.
+     */
     Node Tree;
+    /**
+     * Hashmap storing character and corresponding Huffman code.
+     */
     HashMap<Character, String> hash=new HashMap<>();
+    /**
+     * variable storing size of Serialised Hashmap.
+     */
     long mapsize;
     @Override
     public void InitialiseMap(String filename){
@@ -107,6 +122,10 @@ public class HuffmanEncoding extends FileOperations implements TreeGenerator,Enc
             e.printStackTrace();
         }
     }
+
+//    OLDER IMPLEMENTATIONS
+
+
 //    @Override
 //    public void StoreMap() {
 //        try{

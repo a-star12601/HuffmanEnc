@@ -1,36 +1,32 @@
 import java.io.*;
 import java.util.*;
 
+/**
+ * Class for performing Huffman decoding.
+ */
 public class HuffmanDecoding extends FileOperations implements TreeGenerator,DecoderInterface{
 
+    /**
+     * Character frequency hashmap.
+     */
     HashMap<Character,Integer> map;
+    /**
+     * Data Structure for storing Huffman Tree.
+     */
     Node Tree;
+    /**
+     * variable storing no. of characters to be read.
+     */
     long count;
+    /**
+     * variable storing size of serialised map.
+     */
     long mapsize;
-//    @Override
-//    public HashMap<Character, Integer> InitialiseMap(String filename){
-//        HashMap<Character, Integer> map = new HashMap<>();
-//        try {
-//            File mapfile = new File(filename);
-//            Scanner s = new Scanner(mapfile);
-//            while (s.hasNextLine()) {
-//                String line = s.nextLine();
-//                if (line.substring(0, 2).equals("\\n")) {
-//                    map.put('\n', Integer.parseInt(line.substring(3)));
-//                } else
-//                    map.put(line.charAt(0), Integer.parseInt(line.substring(2)));
-//            }
-//            s.close();
-//        }
-//        catch (Exception e){}
-//            return map;
-//    }
 
     @Override
     public void InitialiseMap(String filename) {
         try{
-            //System.out.println(filename);
-            byte[] b=ReadFile(filename);
+             byte[] b=ReadFile(filename);
             mapsize=Long.parseLong(filename.substring(0,filename.length()-4));
             byte[] b1=Arrays.copyOfRange(b,0,(int)mapsize);
             ByteArrayInputStream bStream=new ByteArrayInputStream(b1);
@@ -43,22 +39,10 @@ public class HuffmanDecoding extends FileOperations implements TreeGenerator,Dec
             e.printStackTrace();
         }
     }
-//    public void InitialiseMap(String filename) {
-//        try{
-//            FileInputStream input=new FileInputStream(filename);
-//            ObjectInputStream serial=new ObjectInputStream(input);
-//            map=(HashMap<Character, Integer>) serial.readObject();
-//            serial.close();
-//            input.close();
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public void InitialiseTree() {
-        PriorityQueue<Node> q=new PriorityQueue<Node>(map.size(),new Sort());
+        PriorityQueue<Node> q=new PriorityQueue<>(map.size(),new Sort());
         for(Map.Entry<Character, Integer> entry:map.entrySet()) {
             Node temp=new Node(entry.getKey(),entry.getValue());
             q.add(temp);
@@ -127,6 +111,56 @@ public class HuffmanDecoding extends FileOperations implements TreeGenerator,Dec
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void getCount() {
+        count=0;
+        for(Map.Entry<Character, Integer> entry:map.entrySet()){
+            count+=entry.getValue();
+        }
+    }
+
+}
+
+//   OLDER IMPLEMENTATION
+
+
+//    public void InitialiseMap(String filename) {
+//        try{
+//            FileInputStream input=new FileInputStream(filename);
+//            ObjectInputStream serial=new ObjectInputStream(input);
+//            map=(HashMap<Character, Integer>) serial.readObject();
+//            serial.close();
+//            input.close();
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
+
+//    @Override
+//    public HashMap<Character, Integer> InitialiseMap(String filename){
+//        HashMap<Character, Integer> map = new HashMap<>();
+//        try {
+//            File mapfile = new File(filename);
+//            Scanner s = new Scanner(mapfile);
+//            while (s.hasNextLine()) {
+//                String line = s.nextLine();
+//                if (line.substring(0, 2).equals("\\n")) {
+//                    map.put('\n', Integer.parseInt(line.substring(3)));
+//                } else
+//                    map.put(line.charAt(0), Integer.parseInt(line.substring(2)));
+//            }
+//            s.close();
+//        }
+//        catch (Exception e){}
+//            return map;
+//    }
+
+
+
+
+
 //    @Override
 //    public void DecodeText(Node Tree, String filename,long count) {
 //        try {
@@ -174,13 +208,3 @@ public class HuffmanDecoding extends FileOperations implements TreeGenerator,Dec
 //            e.printStackTrace();
 //        }
 //    }
-
-    @Override
-    public void getCount() {
-        count=0;
-        for(Map.Entry<Character, Integer> entry:map.entrySet()){
-            count+=entry.getValue();
-        }
-    }
-
-}

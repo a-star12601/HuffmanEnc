@@ -1,17 +1,27 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 
+/**
+ * Main class.
+ */
 public class Main implements StandardUI{
 
+    /**
+     * variable storing original filename.
+     */
     String filename="";
+    /**
+     * variable storing compressed filename.
+     */
     String compressed="";
 
+    /**
+     * Main method
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         Main m=new Main();
         m.ReadFileName();

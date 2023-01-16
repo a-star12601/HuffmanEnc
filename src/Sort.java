@@ -1,5 +1,8 @@
 import java.util.Comparator;
 
+/**
+ * Comparator to sort the tree nodes.
+ */
 public class Sort implements Comparator<Node> {
     public int compare(Node x,Node y){
         if(x.Freq-y.Freq!=0)
