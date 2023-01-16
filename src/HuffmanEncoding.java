@@ -1,53 +1,38 @@
 import java.io.*;
 import java.util.*;
 
-public class HuffmanEncoding implements TreeGenerator,EncoderInterface{
+public class HuffmanEncoding extends FileOperations implements TreeGenerator,EncoderInterface {
+
+    HashMap<Character,Integer> map=new HashMap<>();
+    Node Tree;
+    HashMap<Character, String> hash=new HashMap<>();
+    long mapsize;
     @Override
-    public HashMap<Character, Integer> InitialiseMap(String filename) throws FileNotFoundException {
-        File f0=new File(filename);
-        Scanner s=new Scanner(f0);
-        HashMap<Character,Integer> map=new HashMap<>();
-        while(s.hasNextLine()) {
-            String line = s.nextLine();
-            for (char ch : line.toCharArray()) {
-                int count = map.getOrDefault(ch, 0);
-                map.put(ch, count + 1);
-            }
-            int nl= map.getOrDefault('\n', 0);
-            map.put('\n', nl + 1);
+    public void InitialiseMap(String filename){
+        byte[] arr=ReadFile(filename);
+        for (byte b : arr) {
+            char ch = (char) b;
+            int count = map.getOrDefault(ch, 0);
+            map.put(ch, count + 1);
         }
-        s.close();
-        return map;
     }
 
     @Override
-    public Node InitialiseTree(HashMap<Character,Integer> map) {
+    public void InitialiseTree() {
         PriorityQueue<Node> q=new PriorityQueue<Node>(map.size(),new Sort());
         for(Map.Entry<Character, Integer> entry:map.entrySet()) {
-            Node temp=new Node();
-            temp.Char=entry.getKey();
-            temp.Freq=entry.getValue();
-            temp.Left=null;
-            temp.Right=null;
-            temp.Height=0;
+            Node temp=new Node(entry.getKey(),entry.getValue());
             q.add(temp);
         }
         Node root=null;
         while(q.size()>1) {
-            //System.out.println(q);
             Node left=q.poll();
             Node right=q.poll();
-
-            Node sum=new Node();
-            sum.Freq=left.Freq+right.Freq;
-            sum.Char='\0';
-            sum.Left=left;
-            sum.Right=right;
-            sum.Height=Math.max(left.Height,right.Height)+1;
+            Node sum=new Node(left.Freq+right.Freq,left,right,Math.max(left.Height,right.Height)+1);
             root=sum;
             q.add(sum);
         }
-        return root;
+        Tree=root;
     }
 
     @Override
@@ -62,69 +47,96 @@ public class HuffmanEncoding implements TreeGenerator,EncoderInterface{
     }
 
     @Override
-    public HashMap<Character, String> GenerateTreeMap(Node Tree) {
-        HashMap<Character,String> hash=new HashMap<>();
+    public void GenerateTreeMap() {
         SetBitsHash(Tree,"",hash);
-        return hash;
     }
 
     @Override
-    public void EncodeText(HashMap<Character, String> TreeMap, String FileName) throws FileNotFoundException {
-        File input=new File(FileName);
-        Scanner s=new Scanner(input);
+    public void EncodeText(String FileName) throws FileNotFoundException {
         String ByteArr="";
         String CurrentByte="";
         try {
-            FileOutputStream fout = new FileOutputStream("Compressed.txt");
-            while (s.hasNextLine()) {
-                String line = s.nextLine();
-                for (char ch : line.toCharArray()) {
-                    ByteArr+=TreeMap.get(ch);
-                    if(ByteArr.length()>8){
-                        CurrentByte=ByteArr.substring(0,8);
-                        ByteArr=ByteArr.substring(8);
-                        //System.out.println(CurrentByte);
-                        byte b = (byte) Integer.parseInt(CurrentByte, 2);
-                        fout.write(b);
-                    }
+            FileOutputStream fout = new FileOutputStream(mapsize+".txt",true);
+            byte[] arr = ReadFile(FileName);
+            for (byte c : arr) {
+                char ch = (char) c;
+                ByteArr+=hash.get(ch);
+                if(ByteArr.length()>8){
+                    CurrentByte=ByteArr.substring(0,8);
+                    ByteArr=ByteArr.substring(8);
+                    byte b = (byte) Integer.parseInt(CurrentByte, 2);
+                    fout.write(b);
                 }
-                ByteArr+=TreeMap.get('\n');
             }
             while(ByteArr.length()>=8) {
                 CurrentByte = ByteArr.substring(0, 8);
                 ByteArr = ByteArr.substring(8);
-                //System.out.println(CurrentByte);
                 byte b = (byte) Integer.parseInt(CurrentByte, 2);
                 fout.write(b);
             }
             if(ByteArr.length()>0){
                 CurrentByte=String.format("%1$-" + 8 + "s", ByteArr).replace(' ', '0');
                 ByteArr="";
-                //System.out.println(CurrentByte);
                 byte b = (byte) Integer.parseInt(CurrentByte, 2);
                 fout.write(b);
             }
             fout.close();
         }
-        catch (Exception e){System.out.println(e);}
-        s.close();
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void StoreMap(HashMap<Character, Integer> FreqMap) {
+    public void StoreMap() {
         try{
-            FileWriter mapfile=new FileWriter("Key.txt");
-            for(Map.Entry<Character, Integer> entry:FreqMap.entrySet()) {
-                if(entry.getKey()=='\n'){
-                    mapfile.write("\\n "+entry.getValue()+"\n");
-                }
-                else
-                mapfile.write(entry.getKey()+" "+entry.getValue()+"\n");
-        }
-        mapfile.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
+            ByteArrayOutputStream bStream=new ByteArrayOutputStream();
+            ObjectOutputStream serial=new ObjectOutputStream(bStream);
+            serial.writeObject(map);
+            serial.close();
+            byte[] b= bStream.toByteArray();
+            mapsize=b.length;
+            //System.out.println(mapsize);
+            FileOutputStream output=new FileOutputStream(mapsize+".txt");
+            output.write(b);
+            output.close();
+            bStream.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
+//    @Override
+//    public void StoreMap() {
+//        try{
+//            FileOutputStream output=new FileOutputStream("Key.txt");
+//            ObjectOutputStream serial=new ObjectOutputStream(output);
+//            serial.writeObject(map);
+//            serial.close();
+//            output.close();
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
+
+//    @Override
+//    public void StoreMap(HashMap<Character, Integer> FreqMap) {
+//        try{
+//            FileWriter mapfile=new FileWriter("Key.txt");
+//            for(Map.Entry<Character, Integer> entry:FreqMap.entrySet()) {
+//                if(entry.getKey()=='\n'){
+//                    mapfile.write("\\n "+entry.getValue()+"\n");
+//                }
+//                else
+//                mapfile.write(entry.getKey()+" "+entry.getValue()+"\n");
+//        }
+//        mapfile.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
+
 }

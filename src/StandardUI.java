@@ -1,2 +1,8 @@
-package PACKAGE_NAME;public interface StandardUI {
+public interface StandardUI {
+
+    void ReadFileName();
+    void Encode();
+    void Decode();
+
+
 }

@@ -1,8 +1,8 @@
 import java.util.HashMap;
 
 public interface DecoderInterface {
-    void DecodeText(Node Tree,String filename,long count);
+    void DecodeText(String filename);
 
-    long getCount(HashMap<Character,Integer> Map);
+    void getCount();
 
 }

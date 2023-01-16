@@ -3,6 +3,6 @@
 java:S1220""Move this file to a named package.
 d	java:S116"ORename this field "Char" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®ÀÔ
 d	java:S116"ORename this field "Freq" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Á™²Ï
-k	java:S116"ORename this field "Left" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Âì˜µ8¼·†Ş×0
-q	java:S116"PRename this field "Right" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Åë¸ùÿÿÿÿ8¼·†Ş×0
-l	java:S116"QRename this field "Height" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©¿ùY8¼ÃÏØ0
+d	java:S116"ORename this field "Left" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Âì˜µ
+j	java:S116"PRename this field "Right" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Åë¸ùÿÿÿÿ
+e	java:S116"QRename this field "Height" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©¿ùY
