@@ -1,0 +1,12 @@
+
+r	java:S117$"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ş¨‚Òşÿÿÿÿ8íÁÖÆÛ0
+7
+java:S1220""Move this file to a named package.8íÁÖÆÛ0
+o	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ü¹³¿øÿÿÿÿ8ïÁÖÆÛ0
+o	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÌÊ¡üÿÿÿÿ8ğÁÖÆÛ0
+j	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ù–Æ…8ğÁÖÆÛ0
+o	java:S100$"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ş¨‚Òşÿÿÿÿ8ñÁÖÆÛ0
+\
+java:S1128":Remove this unused import 'java.io.FileNotFoundException'.(·î™ùÿÿÿÿ8òÁÖÆÛ0
+R
+java:S1128"0Remove this unused import 'java.io.IOException'.(ªº»Úıÿÿÿÿ8òÁÖÆÛ0
