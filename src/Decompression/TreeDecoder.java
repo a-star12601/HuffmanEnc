@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class for general Tree-Based Decoders.
+ */
 public class TreeDecoder extends FileOperations implements DecoderInterface {
     /**
      * Character frequency hashmap.
@@ -28,8 +31,14 @@ public class TreeDecoder extends FileOperations implements DecoderInterface {
      * variable storing size of serialised map.
      */
     long mapsize;
+    /**
+     * The Hashmap storing code mappings.
+     */
     HashMap<Character, String> hash=new HashMap<>();
 
+    /**
+     * Byte Array storing file contents.
+     */
     byte[] arr;
 
     @Override
@@ -38,7 +47,6 @@ public class TreeDecoder extends FileOperations implements DecoderInterface {
             //System.out.println("Decompressing");
             File decomp=new File("Decompressed.txt");
             List<Byte> bytes=new ArrayList<>();
-
             int curbyte=(int)mapsize;
             Node root=Tree;
             byte b=arr[curbyte];
@@ -48,9 +56,9 @@ public class TreeDecoder extends FileOperations implements DecoderInterface {
             for (int i = 0; i < 8; i++)
                 bits[7 - i] = ((b & (1 << i)) != 0);
             while(curbyte<(int)arr.length){
-                //System.out.println("Out");
+//                System.out.println("Out");
                 while(root.Left!=null && root.Right!=null){
-                    //System.out.println("In");
+//                    System.out.println("In");
                     if(bitcounter==8){
                         b=arr[++curbyte];
                         for (int i = 0; i < 8; i++)

@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class for general Tree-Based Encoders.
+ */
 public class TreeEncoder extends FileOperations implements EncoderInterface {
     /**
      * Hashmap storing character frequencies.
@@ -30,6 +33,9 @@ public class TreeEncoder extends FileOperations implements EncoderInterface {
      */
     long mapsize;
 
+    /**
+     * Byte Array storing file contents.
+     */
     byte[] arr;
 
     public void EncodeText(String fileName) throws FileNotFoundException {

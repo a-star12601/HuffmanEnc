@@ -17,7 +17,7 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
     public void InitialiseMap(String filename) {
         try{
             arr=ReadFile(filename);
-            System.out.println(arr.length);
+//            System.out.println(arr.length);
             int i=0;
             for(byte x:arr){
                 if((char) x=='\n'){
@@ -47,6 +47,13 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
             q.add(temp);
         }
         Node root=null;
+        if(q.size()==1){
+            root=new Node();
+            Node single=q.poll();
+            root.Left=single;
+            root.Freq=single.Freq;
+            root.Right=new Node();
+        }
         while(q.size()>1) {
             Node left=q.poll();
             Node right=q.poll();

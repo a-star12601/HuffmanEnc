@@ -3,7 +3,7 @@ package Compression;
 import java.io.FileNotFoundException;
 
 /**
- * The interface Encoder interface.
+ * The interface for a general Encoder.
  */
 public interface EncoderInterface {
     /**
@@ -15,7 +15,7 @@ public interface EncoderInterface {
     void EncodeText(String FileName) throws FileNotFoundException;
 
     /**
-     * Serialise and map into compressed file.
+     * Serialise and store map into compressed file.
      */
     void StoreMap();
 }

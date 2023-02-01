@@ -46,5 +46,13 @@ public class FileOperations {
         }
     }
 
+    public void CompressionStats(String original,String compressed){
+        File f1=new File(original);
+        File f2=new File(compressed);
+        System.out.println("Original File Size: "+ f1.length()+"bytes");
+        System.out.println("Compressed File Size: "+ f2.length()+"bytes");
+        float percentage=(float)(f1.length()- f2.length())*100/f1.length();
+        System.out.println("Compression Ratio: "+ percentage+"%");
+    }
 
 }

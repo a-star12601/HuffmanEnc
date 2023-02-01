@@ -54,7 +54,7 @@ public class Main implements StandardUI{
 //        System.out.println("Writing Map to File...");
         enc.StoreMap();
         try {
-            System.out.println("Compressing to File...");
+//            System.out.println("Compressing to File...");
             enc.EncodeText(filename);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -62,6 +62,7 @@ public class Main implements StandardUI{
         Instant inst2 = Instant.now();
         System.out.println("Time Taken for Compression: "+ Duration.between(inst1, inst2).toString());
         compressed="Compressed.txt";
+        enc.CompressionStats(filename,compressed);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class Main implements StandardUI{
         decode.getCount();
 //        System.out.println("Creating Huffman Tree...");
         decode.InitialiseTree();
-        //decode.GenerateTreeMap();
+//        decode.GenerateTreeMap();
 //        System.out.println("Decompressing...");
         decode.DecodeText(compressed);
         Instant inst2 = Instant.now();

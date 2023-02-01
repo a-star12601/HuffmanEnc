@@ -4,6 +4,8 @@ import Compression.TreeEncoder;
 import General.Node;
 import General.Sort;
 import General.TreeGenerator;
+
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.*;
 /**
  * Class for performing Huffman Encoding.
@@ -16,6 +18,7 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
             int count = map.getOrDefault(ch, 0);
             map.put(ch, count + 1);
         }
+
     }
     @Override
     public void InitialiseTree() {
@@ -25,6 +28,13 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
             q.add(temp);
         }
         Node root=null;
+        if(q.size()==1){
+            root=new Node();
+            Node single=q.poll();
+            root.Left=single;
+            root.Freq=single.Freq;
+            root.Right=new Node();
+        }
         while(q.size()>1) {
             Node left=q.poll();
             Node right=q.poll();
@@ -37,7 +47,9 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
 
     @Override
     public void SetBitsHash(Node Tree, String bits, HashMap<Character,String> FreqMap) {
-        if(Tree.Left==null && Tree.Right==null) {
+        if(Tree==null){
+        }
+        else if(Tree.Left==null && Tree.Right==null) {
             FreqMap.put(Tree.Char,bits);
         }
         else {
@@ -49,9 +61,9 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
     @Override
     public void GenerateTreeMap() {
         SetBitsHash(Tree,"",hash);
-//        for(Map.Entry<Character, String> e : hash.entrySet()) {
-//            System.out.println(e.getKey()+" | "+e.getValue());
-//        }
+        for(Map.Entry<Character, String> e : hash.entrySet()) {
+            System.out.println(e.getKey()+" | "+e.getValue());
+        }
     }
 
 

@@ -1,7 +1,7 @@
 package General;
 
 /**
- * General.Node Data Structure for Tree.
+ * General Node Data Structure for Tree.
  */
 public class Node {
     /**
@@ -28,7 +28,7 @@ public class Node {
     /**
      * Constructor for empty node.
      */
-    Node(){
+    public Node(){
         Char='\0';
         Freq=0;
         Left=null;
