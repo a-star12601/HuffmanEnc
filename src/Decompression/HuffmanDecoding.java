@@ -1,10 +1,17 @@
+package Decompression;
+
+import Decompression.TreeDecoder;
+import General.Node;
+import General.Sort;
+import General.TreeGenerator;
+
 import java.io.*;
 import java.util.*;
 
 /**
  * Class for performing Huffman decoding.
  */
-public class HuffmanDecoding extends TreeDecoder implements TreeGenerator{
+public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
 
     @Override
     public void InitialiseMap(String filename) {
@@ -113,7 +120,7 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator{
 
 
 //    @Override
-//    public void DecodeText(Node Tree, String filename,long count) {
+//    public void DecodeText(General.Node Tree, String filename,long count) {
 //        try {
 //            System.out.println("Decompressing");
 //            File compressed=new File(filename);
@@ -125,7 +132,7 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator{
 //            input.close();
 //            String CurrentByte;
 //            int curbyte=0;
-//            Node root=Tree;
+//            General.Node root=Tree;
 //            byte b=arr[curbyte];
 //            int chars=0;
 //            CurrentByte=String.format("%8s", Integer.toBinaryString((b + 256) % 256))

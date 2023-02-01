@@ -1,10 +1,18 @@
+package Compression;
+
+import Compression.EncoderInterface;
+import General.FileOperations;
+import General.Node;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class TreeEncoder extends FileOperations implements EncoderInterface{
+public class TreeEncoder extends FileOperations implements EncoderInterface {
     /**
      * Hashmap storing character frequencies.
      */
@@ -28,7 +36,7 @@ public class TreeEncoder extends FileOperations implements EncoderInterface{
         String ByteArr="";
         String CurrentByte="";
         try {
-            FileOutputStream fout = new FileOutputStream("Compressed.txt",true);
+            List<Byte> bytes=new ArrayList<>();
             for (byte c : arr) {
                 char ch = (char) c;
                 ByteArr+=hash.get(ch);
@@ -36,21 +44,29 @@ public class TreeEncoder extends FileOperations implements EncoderInterface{
                     CurrentByte=ByteArr.substring(0,8);
                     ByteArr=ByteArr.substring(8);
                     byte b = (byte) Integer.parseInt(CurrentByte, 2);
-                    fout.write(b);
+                    bytes.add(b);
                 }
             }
             while(ByteArr.length()>=8) {
                 CurrentByte = ByteArr.substring(0, 8);
                 ByteArr = ByteArr.substring(8);
                 byte b = (byte) Integer.parseInt(CurrentByte, 2);
-                fout.write(b);
+                bytes.add(b);
             }
             if(ByteArr.length()>0){
                 CurrentByte=String.format("%1$-" + 8 + "s", ByteArr).replace(' ', '0');
                 ByteArr="";
                 byte b = (byte) Integer.parseInt(CurrentByte, 2);
-                fout.write(b);
+                bytes.add(b);
             }
+
+            byte[] exportBytes=new byte[bytes.size()];
+            int i=0;
+            for(Byte b:bytes){
+                exportBytes[i++]=b.byteValue();
+            }
+            FileOutputStream fout = new FileOutputStream("Compressed.txt",true);
+            fout.write(exportBytes);
             fout.close();
         }
         catch(Exception e){

@@ -1,27 +1,29 @@
+package General;
+
 /**
- * Node Data Structure for Tree.
+ * General.Node Data Structure for Tree.
  */
 public class Node {
     /**
      * Character in the node.
      */
-    char Char;
+    public char Char;
     /**
      * frequency of the node.
      */
-    int Freq;
+    public int Freq;
     /**
      * left link.
      */
-    Node Left;
+    public Node Left;
     /**
      * right link.
      */
-    Node Right;
+    public Node Right;
     /**
      * Current height of node.
      */
-    int Height;
+    public int Height;
 
     /**
      * Constructor for empty node.
@@ -40,7 +42,7 @@ public class Node {
      * @param c the character
      * @param f the frequency
      */
-    Node(char c,int f){
+    public Node(char c,int f){
         Char=c;
         Freq=f;
         Left=null;
@@ -56,7 +58,7 @@ public class Node {
      * @param right the right link
      * @param h     the height
      */
-    Node(int f,Node left,Node right,int h){
+    public Node(int f,Node left,Node right,int h){
         Freq=f;
         Char='\0';
         Left=left;

@@ -1,5 +1,7 @@
-import java.io.FileNotFoundException;
-import java.io.IOException;
+package General;
+
+import General.Node;
+
 import java.util.HashMap;
 
 /**
@@ -33,5 +35,5 @@ public interface TreeGenerator {
      * @param bits    current string
      * @param map     the map storing the mappings
      */
-    void SetBitsHash(Node Tree,String bits,HashMap<Character,String> map);
+    void SetBitsHash(Node Tree, String bits, HashMap<Character,String> map);
 }

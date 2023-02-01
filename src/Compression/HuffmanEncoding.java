@@ -1,6 +1,10 @@
-import java.io.*;
-import java.util.*;
+package Compression;
 
+import Compression.TreeEncoder;
+import General.Node;
+import General.Sort;
+import General.TreeGenerator;
+import java.util.*;
 /**
  * Class for performing Huffman Encoding.
  */
@@ -32,7 +36,7 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
     }
 
     @Override
-    public void SetBitsHash(Node Tree,String bits,HashMap<Character,String> FreqMap) {
+    public void SetBitsHash(Node Tree, String bits, HashMap<Character,String> FreqMap) {
         if(Tree.Left==null && Tree.Right==null) {
             FreqMap.put(Tree.Char,bits);
         }

@@ -1,3 +1,6 @@
+import Compression.HuffmanEncoding;
+import Decompression.HuffmanDecoding;
+
 import java.io.FileNotFoundException;
 import java.time.Duration;
 import java.time.Instant;
@@ -42,13 +45,13 @@ public class Main implements StandardUI{
     public void Encode() {
         HuffmanEncoding enc=new HuffmanEncoding();
         Instant inst1 = Instant.now();
-        System.out.println("Creating Frequency Map...");
+//        System.out.println("Creating Frequency Map...");
         enc.InitialiseMap(filename);
-        System.out.println("Creating Huffman Tree...");
+//        System.out.println("Creating Huffman Tree...");
         enc.InitialiseTree();
-        System.out.println("Creating HashTable...");
+//        System.out.println("Creating HashTable...");
         enc.GenerateTreeMap();
-        System.out.println("Writing Map to File...");
+//        System.out.println("Writing Map to File...");
         enc.StoreMap();
         try {
             System.out.println("Compressing to File...");
@@ -58,19 +61,20 @@ public class Main implements StandardUI{
         }
         Instant inst2 = Instant.now();
         System.out.println("Time Taken for Compression: "+ Duration.between(inst1, inst2).toString());
-        compressed=enc.mapsize+".txt";
+        compressed="Compressed.txt";
     }
 
     @Override
     public void Decode() {
         HuffmanDecoding decode=new HuffmanDecoding();
         Instant inst1 = Instant.now();
-        System.out.println("Reading Frequency Map...");
+//        System.out.println("Reading Frequency Map...");
         decode.InitialiseMap(compressed);
         decode.getCount();
-        System.out.println("Creating Huffman Tree...");
+//        System.out.println("Creating Huffman Tree...");
         decode.InitialiseTree();
-        System.out.println("Decompressing...");
+        //decode.GenerateTreeMap();
+//        System.out.println("Decompressing...");
         decode.DecodeText(compressed);
         Instant inst2 = Instant.now();
         System.out.println("Time Taken for Decompression: "+ Duration.between(inst1, inst2).toString());

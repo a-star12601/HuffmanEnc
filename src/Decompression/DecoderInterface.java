@@ -1,3 +1,5 @@
+package Decompression;
+
 import java.util.HashMap;
 
 /**

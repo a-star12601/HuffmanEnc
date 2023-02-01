@@ -1,12 +1,17 @@
-import java.io.ByteArrayInputStream;
+package Decompression;
+
+import Decompression.DecoderInterface;
+import General.FileOperations;
+import General.Node;
+
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class TreeDecoder extends FileOperations implements DecoderInterface{
+public class TreeDecoder extends FileOperations implements DecoderInterface {
     /**
      * Character frequency hashmap.
      */
@@ -32,7 +37,8 @@ public class TreeDecoder extends FileOperations implements DecoderInterface{
         try {
             //System.out.println("Decompressing");
             File decomp=new File("Decompressed.txt");
-            FileOutputStream output= new FileOutputStream(decomp);
+            List<Byte> bytes=new ArrayList<>();
+
             int curbyte=(int)mapsize;
             Node root=Tree;
             byte b=arr[curbyte];
@@ -60,11 +66,18 @@ public class TreeDecoder extends FileOperations implements DecoderInterface{
                         root = root.Right;
                     }
                 }
-                output.write((byte)root.Char);
+                bytes.add((byte)root.Char);
                 chars++;
                 if(chars==count){break;}
                 root=Tree;
             }
+            byte[] exportBytes=new byte[bytes.size()];
+            int i=0;
+            for(Byte c:bytes){
+                exportBytes[i++]=c.byteValue();
+            }
+            FileOutputStream output= new FileOutputStream(decomp);
+            output.write(exportBytes);
             output.close();
         } catch (Exception e) {
             e.printStackTrace();

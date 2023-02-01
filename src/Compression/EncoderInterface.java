@@ -1,3 +1,5 @@
+package Compression;
+
 import java.io.FileNotFoundException;
 
 /**
