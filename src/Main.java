@@ -1,5 +1,5 @@
-import Compression.HuffmanEncoding;
-import Decompression.HuffmanDecoding;
+import compression.HuffmanEncoding;
+import decompression.HuffmanDecoding;
 
 import java.io.FileNotFoundException;
 import java.time.Duration;
@@ -27,59 +27,59 @@ public class Main implements StandardUI{
      */
     public static void main(String[] args) {
         Main m=new Main();
-        m.ReadFileName();
-        m.Encode();
-        m.Decode();
+        m.readFileName();
+        m.encode();
+        m.decode();
 
     }
 
 
     @Override
-    public void ReadFileName() {
+    public void readFileName() {
         System.out.println("Enter Filename to be compressed:");
         Scanner s= new Scanner(System.in);
         filename=s.nextLine();
     }
 
     @Override
-    public void Encode() {
+    public void encode() {
         HuffmanEncoding enc=new HuffmanEncoding();
         Instant inst1 = Instant.now();
 //        System.out.println("Creating Frequency Map...");
-        enc.InitialiseMap(filename);
+        enc.initialiseMap(filename);
 //        System.out.println("Creating Huffman Tree...");
-        enc.InitialiseTree();
+        enc.initialiseTree();
 //        System.out.println("Creating HashTable...");
-        enc.GenerateTreeMap();
+        enc.generateTreeMap();
 //        System.out.println("Writing Map to File...");
-        enc.StoreMap();
+        enc.storeMap();
         try {
 //            System.out.println("Compressing to File...");
-            enc.EncodeText(filename);
+            enc.encodeText(filename);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         Instant inst2 = Instant.now();
         System.out.println("Time Taken for Compression: "+ Duration.between(inst1, inst2).toString());
         compressed="Compressed.txt";
-        enc.CompressionStats(filename,compressed);
+        enc.compressionStats(filename,compressed);
     }
 
     @Override
-    public void Decode() {
+    public void decode() {
         HuffmanDecoding decode=new HuffmanDecoding();
         Instant inst1 = Instant.now();
 //        System.out.println("Reading Frequency Map...");
-        decode.InitialiseMap(compressed);
+        decode.initialiseMap(compressed);
         decode.getCount();
 //        System.out.println("Creating Huffman Tree...");
-        decode.InitialiseTree();
+        decode.initialiseTree();
 //        decode.GenerateTreeMap();
 //        System.out.println("Decompressing...");
-        decode.DecodeText(compressed);
+        decode.decodeText(compressed);
         Instant inst2 = Instant.now();
         System.out.println("Time Taken for Decompression: "+ Duration.between(inst1, inst2).toString());
         System.out.println("Comparing Files...");
-        decode.CompareFiles(filename,"Decompressed.txt");
+        decode.compareFiles(filename,"Decompressed.txt");
     }
 }

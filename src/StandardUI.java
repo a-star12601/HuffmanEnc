@@ -6,17 +6,17 @@ public interface StandardUI {
     /**
      * Method to  read a filename.
      */
-    void ReadFileName();
+    void readFileName();
 
     /**
      * Perform Encode Operation.
      */
-    void Encode();
+    void encode();
 
     /**
      * Perform Decode Operation.
      */
-    void Decode();
+    void decode();
 
 
 }
