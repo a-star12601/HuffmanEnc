@@ -1,0 +1,12 @@
+root/compression/EncoderInterface.class
+root/StandardUI.class
+root/compression/TreeEncoder.class
+root/general/Node.class
+root/general/TreeGenerator.class
+root/Main.class
+root/decompression/HuffmanDecoding.class
+root/general/FileOperations.class
+root/decompression/TreeDecoder.class
+root/decompression/DecoderInterface.class
+root/general/Sort.class
+root/compression/HuffmanEncoding.class
