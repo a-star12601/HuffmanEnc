@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="4" failures="0" name="root.decompression.HuffmanDecodingTest" time="0.044" errors="0" skipped="0">
+<testsuite tests="5" failures="0" name="root.decompression.HuffmanDecodingTest" time="0.057" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2022.3.2"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
@@ -62,8 +62,9 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.stdout.encoding" value="UTF-8"/>
   </properties>
-  <testcase classname="root.decompression.HuffmanDecodingTest" name="TestDecode" time="0.014"/>
-  <testcase classname="root.decompression.HuffmanDecodingTest" name="TestInitialiseTreeMultiNode" time="0.012"/>
-  <testcase classname="root.decompression.HuffmanDecodingTest" name="TestInitialiseMap" time="0.013"/>
-  <testcase classname="root.decompression.HuffmanDecodingTest" name="TestInitialiseTreeSingleNode" time="0.005"/>
+  <testcase classname="root.decompression.HuffmanDecodingTest" name="TestOverallDecode" time="0.048"/>
+  <testcase classname="root.decompression.HuffmanDecodingTest" name="checkDecoding" time="0.001"/>
+  <testcase classname="root.decompression.HuffmanDecodingTest" name="TestInitialiseTreeMultiNode" time="0.004"/>
+  <testcase classname="root.decompression.HuffmanDecodingTest" name="TestInitialiseMap" time="0.002"/>
+  <testcase classname="root.decompression.HuffmanDecodingTest" name="TestInitialiseTreeSingleNode" time="0.002"/>
 </testsuite>

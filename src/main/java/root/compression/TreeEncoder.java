@@ -38,6 +38,30 @@ public class TreeEncoder extends FileOperations implements EncoderInterface {
     byte[] arr;
 
     public void encodeText(String fileName) throws FileNotFoundException {
+        List<Byte> bytes=encodingLogic(arr,hash);
+        byte[] exportBytes=byteFromByteList(bytes);
+        writeToFile("Compressed.txt",true,exportBytes);
+
+    }
+    public void storeMap(String compressedPath) {
+        try{
+            ByteArrayOutputStream bStream=new ByteArrayOutputStream();
+            ObjectOutputStream serial=new ObjectOutputStream(bStream);
+            serial.writeObject(map);
+            serial.close();
+            byte[] b= bStream.toByteArray();
+            bStream.close();
+            mapsize=b.length;
+            FileOutputStream output=new FileOutputStream(compressedPath);
+            output.write((mapsize+"\n").getBytes());
+            output.write(b);
+            output.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public List<Byte> encodingLogic(byte[] arr,HashMap<Character,String> hash){
         String byteArr="";
         String currentByte="";
         List<Byte> bytes=new ArrayList<>();
@@ -56,30 +80,9 @@ public class TreeEncoder extends FileOperations implements EncoderInterface {
             byte b = (byte) Integer.parseInt(currentByte, 2);
             bytes.add(b);
         }
-        byte[] exportBytes=byteFromByteList(bytes);
-        try (FileOutputStream fout = new FileOutputStream("Compressed.txt", true)) {
-            fout.write(exportBytes);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void storeMap() {
-        try{
-            ByteArrayOutputStream bStream=new ByteArrayOutputStream();
-            ObjectOutputStream serial=new ObjectOutputStream(bStream);
-            serial.writeObject(map);
-            serial.close();
-            byte[] b= bStream.toByteArray();
-            bStream.close();
-            mapsize=b.length;
-            FileOutputStream output=new FileOutputStream("Compressed.txt");
-            output.write((mapsize+"\n").getBytes());
-            output.write(b);
-            output.close();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+//        for(Byte c:bytes){
+//            System.out.println(c);
+//        }
+        return bytes;
     }
 }

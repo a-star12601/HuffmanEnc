@@ -58,11 +58,12 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
     @Override
     public void generateTreeMap() {
         setBitsHash(tree,"",hash);
-/*
+        /*
         for(Map.Entry<Character, String> e : hash.entrySet()) {
             System.out.println(e.getKey()+" | "+e.getValue());
         }
-*/
+         */
+
     }
 
 

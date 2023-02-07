@@ -1,3 +1,4 @@
 root/compression/HuffmanEncodingTest.class
 root/decompression/HuffmanDecodingTest.class
+root/general/FileOperationsTest.class
 root/MainTest.class

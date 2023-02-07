@@ -42,44 +42,9 @@ public class TreeDecoder extends FileOperations implements DecoderInterface {
 
     @Override
     public void decodeText(String filename) {
-            File decomp=new File("Decompressed.txt");
-            List<Byte> bytes=new ArrayList<>();
-            int curbyte=(int)mapsize;
-            Node root= tree;
-            byte b=arr[curbyte];
-            int chars=0;
-            int bitcounter=0;
-            boolean[] bits = new boolean[8];
-            for (int i = 0; i < 8; i++)
-                bits[7 - i] = ((b & (1 << i)) != 0);
-            while(curbyte<arr.length){
-                while(root.Left!=null && root.Right!=null){
-                    if(bitcounter==8){
-                        b=arr[++curbyte];
-                        for (int i = 0; i < 8; i++)
-                            bits[7 - i] = ((b & (1 << i)) != 0);
-                        bitcounter=0;
-                    }
-                    else if(!bits[bitcounter]) {
-                        bitcounter++;
-                        root = root.Left;
-                    }
-                    else{
-                        bitcounter++;
-                        root = root.Right;
-                    }
-                }
-                bytes.add((byte)root.Char);
-                chars++;
-                if(chars==count){break;}
-                root= tree;
-            }
-            byte[] exportBytes=byteFromByteList(bytes);
-        try (FileOutputStream output = new FileOutputStream(decomp)) {
-            output.write(exportBytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<Byte> bytes=decodingLogic(arr,tree,mapsize,count);
+        byte[] exportBytes=byteFromByteList(bytes);
+        writeToFile("Decompressed.txt",false,exportBytes);
     }
 
     @Override
@@ -89,6 +54,41 @@ public class TreeDecoder extends FileOperations implements DecoderInterface {
             count+=entry.getValue();
         }
         //System.out.println(count);
+    }
+
+    public List<Byte> decodingLogic(byte[] arr,Node tree,long mapsize,long count){
+        List<Byte> bytes=new ArrayList<>();
+        int curbyte=(int)mapsize;
+        Node root= tree;
+        byte b=arr[curbyte];
+        int chars=0;
+        int bitcounter=0;
+        boolean[] bits = new boolean[8];
+        for (int i = 0; i < 8; i++)
+            bits[7 - i] = ((b & (1 << i)) != 0);
+        while(curbyte<arr.length){
+            while(root.Left!=null && root.Right!=null){
+                if(bitcounter==8){
+                    b=arr[++curbyte];
+                    for (int i = 0; i < 8; i++)
+                        bits[7 - i] = ((b & (1 << i)) != 0);
+                    bitcounter=0;
+                }
+                else if(!bits[bitcounter]) {
+                    bitcounter++;
+                    root = root.Left;
+                }
+                else{
+                    bitcounter++;
+                    root = root.Right;
+                }
+            }
+            bytes.add((byte)root.Char);
+            chars++;
+            if(chars==count){break;}
+            root= tree;
+        }
+        return bytes;
     }
 
 

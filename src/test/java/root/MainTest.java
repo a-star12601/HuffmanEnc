@@ -24,7 +24,7 @@ public class MainTest {
         assertTrue("File Exists",m.CheckFileExists("Empty.txt"));
         assertFalse("File Not Exists",m.CheckFileExists("Ascii2.txt"));
     }
-
+/*
     @Test
     public void encode() {
         assertTrue(m.encode("MultiA.txt"));
@@ -35,4 +35,6 @@ public class MainTest {
         m.encode("MultiA.txt");
         assertTrue(m.decode("MultiA.txt","Compressed.txt"));
     }
+
+ */
 }

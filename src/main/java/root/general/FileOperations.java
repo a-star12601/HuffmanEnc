@@ -1,7 +1,6 @@
 package root.general;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class FileOperations {
             input.read(arr);
             input.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return arr;
     }
@@ -64,5 +63,12 @@ public class FileOperations {
         }
         return exportBytes;
     }
-
+    public void writeToFile(String filename,boolean appendMode,byte[] bytes){
+        try (FileOutputStream fout = new FileOutputStream(filename, appendMode)) {
+            fout.write(bytes);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

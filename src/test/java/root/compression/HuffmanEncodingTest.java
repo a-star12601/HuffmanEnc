@@ -8,7 +8,10 @@ import root.general.Node;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class HuffmanEncodingTest {
     private static HuffmanEncoding enc;
@@ -36,8 +39,6 @@ public class HuffmanEncodingTest {
         tree.Freq=88;
         tree.Right=new Node();
         //System.out.println(enc.tree.Left);
-        preorder(enc.tree);
-        preorder(tree);
         Assert.assertTrue(MatchTrees(enc.tree, tree));
 
     }
@@ -51,8 +52,6 @@ public class HuffmanEncodingTest {
         tree.Freq=6;
         tree.Right=new Node('a',4);
         //System.out.println(enc.tree.Left);
-        preorder(enc.tree);
-        preorder(tree);
         Assert.assertTrue(MatchTrees(enc.tree, tree));
 
     }
@@ -69,18 +68,33 @@ public class HuffmanEncodingTest {
         hash.put('a',"1");
         Assert.assertEquals("Hashmaps not Equal", enc.hash, hash);
     }
-
     @Test
-    public void checkEncode() throws FileNotFoundException {
+    public void checkEncoding(){
+        enc=new HuffmanEncoding();
+        HashMap<Character,String> map=new HashMap<>();
+        map.put('a',"10");
+        map.put('b',"0");
+        map.put('c',"11");
+        List<Byte> bytes=new ArrayList<>();
+        byte[] tempInt=new byte[]{-102,115,70,-26,-76,-36,-25,45,105,-53,113,-70,-42,90,-64};
+        for(byte i:tempInt)
+            bytes.add(i);
+        List<Byte> eval=enc.encodingLogic("abcbabcabcbabbcbcabcbacbabcbcabcabcabacbacbabcabacbcabbcbcaacbacbbacbacb".getBytes(),map);
+        Assert.assertEquals(bytes,eval);
+    }
+    @Test
+    public void checkOverallEncode() throws FileNotFoundException {
         enc=new HuffmanEncoding();
         enc.initialiseMap("pg101.txt");
         enc.initialiseTree();
         enc.generateTreeMap();
-        enc.storeMap();
+        enc.storeMap("Compressed.txt");
         enc.encodeText("pg101.txt");
         Assert.assertTrue(new File("Compressed.txt").exists());
 
     }
+
+
     public boolean MatchTrees(Node expected,Node actual){
         if(expected==null && actual==null)
         {return true;}

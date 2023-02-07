@@ -55,7 +55,7 @@ public class Main implements StandardUI{
 //        System.out.println("Creating HashTable...");
         enc.generateTreeMap();
 //        System.out.println("Writing Map to File...");
-        enc.storeMap();
+        enc.storeMap("Compressed.txt");
         try {
 //            System.out.println("Compressing to File...");
             enc.encodeText(filename);

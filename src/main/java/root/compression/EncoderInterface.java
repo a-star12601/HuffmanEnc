@@ -17,5 +17,5 @@ public interface EncoderInterface {
     /**
      * Serialise and store map into compressed file.
      */
-    void storeMap();
+    void storeMap(String compressedPath);
 }
