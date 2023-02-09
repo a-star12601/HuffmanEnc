@@ -26,6 +26,7 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
                 i++;
             }
             mapsize=mapsize+i+1;
+            System.out.println(mapsize);
             byte[] b1= Arrays.copyOfRange(arr,i+1,(int)mapsize);
             ByteArrayInputStream bStream=new ByteArrayInputStream(b1);
             ObjectInputStream serial=new ObjectInputStream(bStream);
@@ -34,11 +35,15 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
             bStream.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+              throw new RuntimeException(e);
         }
     }
     @Override
-    public void initialiseTree() {
+    public Node initialiseTree(HashMap<Character,Integer> map) {
+        if(map==null||map.size()==0){
+            System.out.println("Map is empty!!");
+            return new Node();
+        }
         PriorityQueue<Node> q=new PriorityQueue<>(map.size(),new Sort());
         for(Map.Entry<Character, Integer> entry:map.entrySet()) {
             Node temp=new Node(entry.getKey(),entry.getValue());
@@ -60,10 +65,11 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
             q.add(sum);
         }
         tree =root;
+        return tree;
     }
 
     @Override
-    public void generateTreeMap() {
+    public void generateTreeMap(Node tree) {
  /*
         setBitsHash(tree, "", hash);
        for (Map.Entry<Character, String> e : hash.entrySet()) {
@@ -71,94 +77,4 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
         }
 */
     }
-
-
-
-
 }
-
-/*
-   OLDER IMPLEMENTATION
-    public void InitialiseMap(String filename) {
-        try{
-            FileInputStream input=new FileInputStream(filename);
-            ObjectInputStream serial=new ObjectInputStream(input);
-            map=(HashMap<Character, Integer>) serial.readObject();
-            serial.close();
-            input.close();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    @Override
-    public HashMap<Character, Integer> InitialiseMap(String filename){
-        HashMap<Character, Integer> map = new HashMap<>();
-        try {
-            File mapfile = new File(filename);
-            Scanner s = new Scanner(mapfile);
-            while (s.hasNextLine()) {
-                String line = s.nextLine();
-                if (line.substring(0, 2).equals("\\n")) {
-                    map.put('\n', Integer.parseInt(line.substring(3)));
-                } else
-                    map.put(line.charAt(0), Integer.parseInt(line.substring(2)));
-            }
-            s.close();
-        }
-        catch (Exception e){}
-            return map;
-    }
-    @Override
-    public void DecodeText(General.Node Tree, String filename,long count) {
-        try {
-            System.out.println("Decompressing");
-            File compressed=new File(filename);
-            FileInputStream input = new FileInputStream(compressed);
-            File decomp=new File("Decompressed.txt");
-            FileOutputStream output= new FileOutputStream(decomp);
-            byte[] arr = new byte[(int)compressed.length()+1];
-            input.read(arr);
-            input.close();
-            String CurrentByte;
-            int curbyte=0;
-            General.Node root=Tree;
-            byte b=arr[curbyte];
-            int chars=0;
-            CurrentByte=String.format("%8s", Integer.toBinaryString((b + 256) % 256))
-                    .replace(' ', '0');
-            while(curbyte<(int)compressed.length()){
-                //System.out.println("Out");
-                while(root.Left!=null && root.Right!=null){
-                    //System.out.println("In");
-                    if(CurrentByte.length()==0){
-                        b=arr[++curbyte];
-                        CurrentByte=String.format("%8s", Integer.toBinaryString((b + 256) % 256))
-                                .replace(' ', '0');
-                    }
-                    else if(CurrentByte.charAt(0)=='0') {
-                        CurrentByte = CurrentByte.substring(1);
-                        root = root.Left;
-                    }
-                    else if(CurrentByte.charAt(0)=='1') {
-                        CurrentByte = CurrentByte.substring(1);
-                        root = root.Right;
-                    }
-                }
-                output.write((byte)root.Char);
-                chars++;
-                if(chars==count-1){break;}
-                root=Tree;
-            }
-            //System.out.println(chars+" "+count);
-            output.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
-
-
-
-

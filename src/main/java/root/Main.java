@@ -51,9 +51,9 @@ public class Main implements StandardUI{
 //        System.out.println("Creating Frequency Map...");
         enc.initialiseMap(filename);
 //        System.out.println("Creating Huffman Tree...");
-        enc.initialiseTree();
+        enc.tree=enc.initialiseTree(enc.map);
 //        System.out.println("Creating HashTable...");
-        enc.generateTreeMap();
+        enc.generateTreeMap(enc.tree);
 //        System.out.println("Writing Map to File...");
         enc.storeMap("Compressed.txt");
         try {
@@ -77,7 +77,7 @@ public class Main implements StandardUI{
         decode.initialiseMap(compressed);
         decode.getCount();
 //        System.out.println("Creating Huffman Tree...");
-        decode.initialiseTree();
+        decode.tree=decode.initialiseTree(decode.map);
 //        decode.GenerateTreeMap();
 //        System.out.println("Decompressing...");
         decode.decodeText(compressed);

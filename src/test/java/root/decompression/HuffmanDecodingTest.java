@@ -2,6 +2,8 @@ package root.decompression;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import root.compression.*;
 import root.general.Node;
 
@@ -12,11 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class HuffmanDecodingTest {
 
+    @Mock
+    HuffmanDecoding decMock;
     @Test
-    public void TestInitialiseMap() throws FileNotFoundException {
+    public void TestInitialiseMap(){
+        MockitoAnnotations.initMocks(this);
         HashMap<Character,Integer> map=new HashMap<>();
         map.put('a',21);
         map.put('b',29);
@@ -24,25 +30,44 @@ public class HuffmanDecodingTest {
         HuffmanDecoding dec=new HuffmanDecoding();
         dec.initialiseMap("Compressed2.txt");
         assertEquals(dec.map,map);
+        doThrow(RuntimeException.class).when(decMock).readFile("Compressed2.txt");
+        doCallRealMethod().when(decMock).initialiseMap("Compressed2.txt");
+        assertThrows(RuntimeException.class,()-> decMock.initialiseMap("Compressed2.txt"));
     }
 
     @Test
-    public void TestInitialiseTreeSingleNode() throws FileNotFoundException {
-        Node tree=new Node(88,new Node('a',88),new Node('\0',0),0);
+    public void TestInitialiseTreeNullNode(){
         HuffmanDecoding dec=new HuffmanDecoding();
-        dec.initialiseMap("CompressedA.txt");
-        dec.initialiseTree();
+        Node tree=new Node();
+        dec.tree=dec.initialiseTree(null);
+        assertTrue(MatchTrees(tree,dec.tree));
+    }
+    @Test
+    public void TestInitialiseTreeEmptyMap(){
+        HuffmanDecoding dec=new HuffmanDecoding();
+        Node tree=new Node();
+        dec.tree=dec.initialiseTree(new HashMap<Character,Integer>());
+        assertTrue(MatchTrees(tree,dec.tree));
+    }
+    @Test
+    public void TestInitialiseTreeSingleNode(){
+        HuffmanDecoding dec=new HuffmanDecoding();
+        Node tree=new Node(88,new Node('a',88),new Node('\0',0),0);
+        HashMap<Character,Integer > map=new HashMap<>();
+        map.put('a',88);
+        dec.tree=dec.initialiseTree(map);
         assertTrue(MatchTrees(tree,dec.tree));
 
     }
     @Test
-    public void TestInitialiseTreeMultiNode() throws FileNotFoundException {
-        Node tree=new Node();
-        tree.Left=new Node('b',29);
-        tree.Right=new Node(43,new Node('a',21),new Node('c',22),1);
+    public void TestInitialiseTreeMultiNode(){
+        Node tree=new Node(72,new Node('b',29),new Node(43,new Node('a',21),new Node('c',22),1),2);
         HuffmanDecoding dec=new HuffmanDecoding();
-        dec.initialiseMap("Compressed2.txt");
-        dec.initialiseTree();
+        HashMap<Character,Integer > map=new HashMap<>();
+        map.put('a',21);
+        map.put('b',29);
+        map.put('c',22);
+        dec.tree=dec.initialiseTree(map);
         assertTrue(MatchTrees(tree,dec.tree));
 
     }
@@ -55,19 +80,13 @@ public class HuffmanDecodingTest {
     }
 
     @Test
-    public void TestOverallDecode() throws FileNotFoundException {
-        HuffmanEncoding enc=new HuffmanEncoding();
-        enc.initialiseMap("test.txt");
-        enc.initialiseTree();
-        enc.generateTreeMap();
-        enc.storeMap("Compressed.txt");
-        enc.encodeText("test.txt");
+    public void TestOverallDecode(){
         HuffmanDecoding dec=new HuffmanDecoding();
         dec.initialiseMap("Compressed.txt");
-        dec.initialiseTree();
+        dec.tree=dec.initialiseTree(dec.map);
         dec.getCount();
         dec.decodeText("Compressed.txt");
-        assertTrue(dec.compareFiles("test.txt","Decompressed.txt"));
+        assertTrue(dec.compareFiles("pg101.txt","Decompressed.txt"));
     }
 
     @Test
@@ -78,9 +97,7 @@ public class HuffmanDecodingTest {
         for(byte i:decompressed)
             bytes.add(i);
         byte[] tempInt=new byte[]{-102,115,70,-26,-76,-36,-25,45,105,-53,113,-70,-42,90,-64};
-        Node tree=new Node();
-        tree.Left=new Node('b',0);
-        tree.Right=new Node(0,new Node('a',0),new Node('c',0),1);
+        Node tree=new Node(72,new Node('b',29),new Node(43,new Node('a',21),new Node('c',22),1),2);
         List<Byte> eval=dec.decodingLogic(tempInt,tree,0,72);
         Assert.assertEquals(bytes,eval);
     }
@@ -90,8 +107,8 @@ public class HuffmanDecodingTest {
     public boolean MatchTrees(Node expected, Node actual){
         if(expected==null && actual==null)
         {return true;}
-//        if(expected.Char==actual.Char && expected.Freq==actual.Freq && expected.Height==actual.Height)
-        if(expected.Char==actual.Char)
+        if(expected.Char==actual.Char && expected.Freq==actual.Freq && expected.Height==actual.Height)
+//        if(expected.Char==actual.Char)
             return MatchTrees(expected.Left,actual.Left)&&MatchTrees(expected.Right,actual.Right);
         else return false;
     }

@@ -3,8 +3,6 @@ package root.decompression;
 import root.general.FileOperations;
 import root.general.Node;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,11 +15,11 @@ public class TreeDecoder extends FileOperations implements DecoderInterface {
     /**
      * Character frequency hashmap.
      */
-    HashMap<Character,Integer> map;
+    public HashMap<Character,Integer> map;
     /**
      * Data Structure for storing Huffman Tree.
      */
-    Node tree;
+    public Node tree;
     /**
      * variable storing no. of characters to be read.
      */

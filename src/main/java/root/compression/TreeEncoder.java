@@ -3,10 +3,7 @@ package root.compression;
 import root.general.FileOperations;
 import root.general.Node;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,18 +42,11 @@ public class TreeEncoder extends FileOperations implements EncoderInterface {
     }
     public void storeMap(String compressedPath) {
         try{
-            ByteArrayOutputStream bStream=new ByteArrayOutputStream();
-            ObjectOutputStream serial=new ObjectOutputStream(bStream);
-            serial.writeObject(map);
-            serial.close();
-            byte[] b= bStream.toByteArray();
-            bStream.close();
+            byte[] b=getMapBytes(map);
             mapsize=b.length;
-            FileOutputStream output=new FileOutputStream(compressedPath);
-            output.write((mapsize+"\n").getBytes());
-            output.write(b);
-            output.close();
-        }
+            writeToFile(compressedPath,false,(mapsize+"\n").getBytes());
+            writeToFile(compressedPath,true,b);
+            }
         catch (Exception e){
             e.printStackTrace();
         }
@@ -80,9 +70,15 @@ public class TreeEncoder extends FileOperations implements EncoderInterface {
             byte b = (byte) Integer.parseInt(currentByte, 2);
             bytes.add(b);
         }
-//        for(Byte c:bytes){
-//            System.out.println(c);
-//        }
         return bytes;
+    }
+    public byte[] getMapBytes(HashMap<Character,Integer> map) throws IOException {
+        ByteArrayOutputStream bStream=new ByteArrayOutputStream();
+        ObjectOutputStream serial=new ObjectOutputStream(bStream);
+        serial.writeObject(map);
+        serial.close();
+        byte[] b= bStream.toByteArray();
+        bStream.close();
+        return b;
     }
 }

@@ -19,7 +19,7 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
 
     }
     @Override
-    public void initialiseTree() {
+    public Node initialiseTree(HashMap<Character,Integer> map) {
         PriorityQueue<Node> q=new PriorityQueue<>(map.size(),new Sort());
         for(Map.Entry<Character, Integer> entry:map.entrySet()) {
             Node temp=new Node(entry.getKey(),entry.getValue());
@@ -41,6 +41,7 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
             q.add(sum);
         }
         tree =root;
+        return tree;
     }
     public void setBitsHash(Node tree, String bits, HashMap<Character,String> freqMap) {
         if(tree ==null){
@@ -56,7 +57,7 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
     }
 
     @Override
-    public void generateTreeMap() {
+    public void generateTreeMap(Node tree) {
         setBitsHash(tree,"",hash);
         /*
         for(Map.Entry<Character, String> e : hash.entrySet()) {

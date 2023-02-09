@@ -19,10 +19,10 @@ public interface TreeGenerator {
     /**
      * Generate the Tree from the Hashmap.
      */
-    void initialiseTree();
+    Node initialiseTree(HashMap<Character,Integer> map);
 
     /**
      * Generate character-mapping using tree.
      */
-    void generateTreeMap();
+    void generateTreeMap(Node tree);
 }
