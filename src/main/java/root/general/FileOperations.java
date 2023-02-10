@@ -14,18 +14,14 @@ public class FileOperations {
      * @param filename Name of the file
      * @return byte array containing file contents
      */
-    public byte[] readFile(String filename){
+    public byte[] readFile(String filename) throws IOException{
         File file = new File(filename);
         FileInputStream input = null;
         byte[] arr=new byte[0];
-        try {
-            input = new FileInputStream(file);
-            arr = new byte[(int) file.length()];
-            input.read(arr);
-            input.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        input = new FileInputStream(file);
+        arr = new byte[(int) file.length()];
+        input.read(arr);
+        input.close();
         return arr;
     }
 
@@ -36,13 +32,17 @@ public class FileOperations {
      * @param file2 Name of 2nd file
      */
     public boolean compareFiles(String file1, String file2){
-        byte[] arr1= readFile(file1);
-        byte[] arr2= readFile(file2);
-        if(Arrays.equals(arr1,arr2)){
-            return true;
-        }
-        else{
-        return false;
+        try {
+            byte[] arr1 = readFile(file1);
+            byte[] arr2= readFile(file2);
+            if(Arrays.equals(arr1,arr2)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -63,12 +63,8 @@ public class FileOperations {
         }
         return exportBytes;
     }
-    public void writeToFile(String filename,boolean appendMode,byte[] bytes){
-        try (FileOutputStream fout = new FileOutputStream(filename, appendMode)) {
-            fout.write(bytes);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+    public void writeToFile(String filename,boolean appendMode,byte[] bytes) throws IOException {
+        FileOutputStream fout = new FileOutputStream(filename, appendMode);
+        fout.write(bytes);
     }
 }

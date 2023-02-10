@@ -4,22 +4,25 @@ import root.general.Node;
 import root.general.Sort;
 import root.general.TreeGenerator;
 
+import java.io.IOException;
 import java.util.*;
 /**
  * Class for performing Huffman Encoding.
  */
-public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
-    public void initialiseMap(String filename){
-        arr= readFile(filename);
+public class HuffmanEncoding implements TreeGenerator {
+
+    public HashMap<Character,Integer> initialiseMap(byte[] arr)throws IOException, ClassNotFoundException {
+        HashMap<Character,Integer> map=new HashMap<>();
         for (byte b : arr) {
             char ch = (char) b;
             int count = map.getOrDefault(ch, 0);
             map.put(ch, count + 1);
         }
-
+        return map;
     }
     @Override
     public Node initialiseTree(HashMap<Character,Integer> map) {
+        Node tree;
         PriorityQueue<Node> q=new PriorityQueue<>(map.size(),new Sort());
         for(Map.Entry<Character, Integer> entry:map.entrySet()) {
             Node temp=new Node(entry.getKey(),entry.getValue());
@@ -57,50 +60,16 @@ public class HuffmanEncoding extends TreeEncoder implements TreeGenerator {
     }
 
     @Override
-    public void generateTreeMap(Node tree) {
+    public HashMap< Character,String> generateTreeMap(Node tree) {
+        HashMap< Character,String > hash=new HashMap<>();
         setBitsHash(tree,"",hash);
+        return hash;
         /*
         for(Map.Entry<Character, String> e : hash.entrySet()) {
             System.out.println(e.getKey()+" | "+e.getValue());
         }
          */
-
     }
 
-
-
-/*
-    OLDER IMPLEMENTATIONS
-    @Override
-    public void StoreMap() {
-        try{
-            FileOutputStream output=new FileOutputStream("Key.txt");
-            ObjectOutputStream serial=new ObjectOutputStream(output);
-            serial.writeObject(map);
-            serial.close();
-            output.close();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    @Override
-    public void StoreMap(HashMap<Character, Integer> FreqMap) {
-        try{
-            FileWriter mapfile=new FileWriter("Key.txt");
-            for(Map.Entry<Character, Integer> entry:FreqMap.entrySet()) {
-                if(entry.getKey()=='\n'){
-                    mapfile.write("\\n "+entry.getValue()+"\n");
-                }
-                else
-                mapfile.write(entry.getKey()+" "+entry.getValue()+"\n");
-        }
-        mapfile.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-*/
 
 }

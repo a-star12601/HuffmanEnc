@@ -11,46 +11,19 @@ import java.util.Map;
 /**
  * Class for root.general Tree-Based Decoders.
  */
-public class TreeDecoder extends FileOperations implements DecoderInterface {
-    /**
-     * Character frequency hashmap.
-     */
-    public HashMap<Character,Integer> map;
-    /**
-     * Data Structure for storing Huffman Tree.
-     */
-    public Node tree;
-    /**
-     * variable storing no. of characters to be read.
-     */
-    long count;
+public class TreeDecoder implements DecoderInterface {
     /**
      * variable storing size of serialised map.
      */
     long mapsize;
-    /**
-     * The Hashmap storing code mappings.
-     */
-    HashMap<Character, String> hash=new HashMap<>();
-
-    /**
-     * Byte Array storing file contents.
-     */
-    byte[] arr;
 
     @Override
-    public void decodeText(String filename) {
-        List<Byte> bytes=decodingLogic(arr,tree,mapsize,count);
-        byte[] exportBytes=byteFromByteList(bytes);
-        writeToFile("Decompressed.txt",false,exportBytes);
-    }
-
-    @Override
-    public void getCount() {
-        count=0;
+    public int getCount(HashMap<Character,Integer> map) {
+        int count=0;
         for(Map.Entry<Character, Integer> entry:map.entrySet()){
             count+=entry.getValue();
         }
+        return count;
         //System.out.println(count);
     }
 

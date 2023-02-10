@@ -1,5 +1,10 @@
 package root.decompression;
 
+import root.general.Node;
+
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * The Decoder interface.
  */
@@ -9,11 +14,11 @@ public interface DecoderInterface {
      *
      * @param filename the filename
      */
-    void decodeText(String filename);
+    List<Byte> decodingLogic(byte[] arr, Node tree, long mapsize, long count);
 
     /**
      * gets no of characters in the file.
      */
-    void getCount();
+    int getCount(HashMap<Character,Integer> map);
 
 }

@@ -1,18 +1,25 @@
 package root;
 
 import root.compression.HuffmanEncoding;
+import root.compression.TreeEncoder;
 import root.decompression.HuffmanDecoding;
+import root.decompression.TreeDecoder;
+import root.general.FileOperations;
+import root.general.Node;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  * root.Main class.
  */
-public class Main implements StandardUI{
+public class Main{
 
 
     /**
@@ -21,13 +28,15 @@ public class Main implements StandardUI{
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        System.out.println("Enter Filename to be compressed:");
         Scanner s= new Scanner(System.in);
         Main m=new Main();
+        System.out.println("Enter Filename to be compressed:");
         String filename=s.nextLine();
+        System.out.println("Enter Compressed Filename:");
+        String compressed=s.nextLine();
         if(m.CheckFileExists(filename) && m.CheckFileNotEmpty(filename)){
-            m.encode(filename);
-            m.decode(filename,"Compressed.txt");
+            m.encode(filename,compressed,new HuffmanEncoding());
+            m.decode(filename,compressed,new HuffmanDecoding());
         } else if (!m.CheckFileExists(filename)) {
             System.out.println("File Doesn't Exist!!");
         }
@@ -44,52 +53,65 @@ public class Main implements StandardUI{
         File f=new File(filename);
         return f.exists();
     }
-    @Override
-    public boolean encode(String filename) {
-        HuffmanEncoding enc=new HuffmanEncoding();
-        Instant inst1 = Instant.now();
-//        System.out.println("Creating Frequency Map...");
-        enc.initialiseMap(filename);
-//        System.out.println("Creating Huffman Tree...");
-        enc.tree=enc.initialiseTree(enc.map);
-//        System.out.println("Creating HashTable...");
-        enc.generateTreeMap(enc.tree);
-//        System.out.println("Writing Map to File...");
-        enc.storeMap("Compressed.txt");
+    public void encode(String filename,String compressed,HuffmanEncoding enc){
+        //HuffmanEncoding enc=new HuffmanEncoding();
         try {
-//            System.out.println("Compressing to File...");
-            enc.encodeText(filename);
-        } catch (FileNotFoundException e) {
+            FileOperations f=new FileOperations();
+            Instant inst1 = Instant.now();
+    //      System.out.println("Creating Frequency Map...");
+            byte[] inputBytes=f.readFile(filename);
+            HashMap<Character,Integer> map=enc.initialiseMap(inputBytes);
+    //      System.out.println("Creating Huffman Tree...");
+            Node tree=enc.initialiseTree(map);
+    //      System.out.println("Creating HashTable...");
+            HashMap<Character,String> hash=enc.generateTreeMap(tree);
+            TreeEncoder encoder=new TreeEncoder();
+    //      System.out.println("Writing Map to File...");
+            List<Byte> encodedList= encoder.encodingLogic(inputBytes,hash);
+//          System.out.println("Compressing to File...");
+            byte[] headerContent=encoder.storeMap(map);
+            byte[] encodedBytes=f.byteFromByteList(encodedList);
+            f.writeToFile(compressed,false,headerContent);
+            f.writeToFile(compressed,true,encodedBytes);
+            Instant inst2 = Instant.now();
+            System.out.println("Time Taken for Compression: "+ Duration.between(inst1, inst2).toString());
+            f.compressionStats(filename,compressed);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Instant inst2 = Instant.now();
-        System.out.println("Time Taken for Compression: "+ Duration.between(inst1, inst2).toString());
-        String compressed="Compressed.txt";
-        enc.compressionStats(filename,compressed);
-        return true;
+        catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @Override
-    public boolean decode(String filename,String compressed) {
-        HuffmanDecoding decode=new HuffmanDecoding();
-        Instant inst1 = Instant.now();
-//        System.out.println("Reading Frequency Map...");
-        decode.initialiseMap(compressed);
-        decode.getCount();
-//        System.out.println("Creating Huffman Tree...");
-        decode.tree=decode.initialiseTree(decode.map);
-//        decode.GenerateTreeMap();
-//        System.out.println("Decompressing...");
-        decode.decodeText(compressed);
-        Instant inst2 = Instant.now();
-        System.out.println("Time Taken for Decompression: "+ Duration.between(inst1, inst2).toString());
-        System.out.println("Comparing Files...");
-        if(decode.compareFiles(filename,"Decompressed.txt")){
-            System.out.println("Files Matched");
+    public void decode(String filename,String compressed,HuffmanDecoding dec) {
+        try {
+            FileOperations f=new FileOperations();
+            Instant inst1 = Instant.now();
+    //        System.out.println("Reading Frequency Map...");
+            byte[] compressBytes=f.readFile(compressed);
+            HashMap<Character,Integer> map=dec.initialiseMap(compressBytes);
+//            System.out.println("Creating Huffman Tree...");
+            Node tree=dec.initialiseTree(map);
+    //        decode.GenerateTreeMap();
+    //        System.out.println("Decompressing...");
+            TreeDecoder decoder=new TreeDecoder();
+            List<Byte> decodedList=decoder.decodingLogic(compressBytes,tree,dec.getMapSize(),decoder.getCount(map));
+            byte[] exportBytes=f.byteFromByteList(decodedList);
+            f.writeToFile("DEC"+filename,false,exportBytes);
+            Instant inst2 = Instant.now();
+            System.out.println("Time Taken for Decompression: "+ Duration.between(inst1, inst2).toString());
+            System.out.println("Comparing Files...");
+            if(f.compareFiles(filename,"DEC"+filename)){
+                System.out.println("Files Matched");
+            }
+            else {
+                System.out.println("Files Mismatched");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        else {
-            System.out.println("Files Mismatched");
         }
-            return true;
-    }
 }

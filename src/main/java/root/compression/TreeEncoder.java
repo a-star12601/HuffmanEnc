@@ -11,46 +11,20 @@ import java.util.List;
 /**
  * Class for root.general Tree-Based Encoders.
  */
-public class TreeEncoder extends FileOperations implements EncoderInterface {
-    /**
-     * Hashmap storing character frequencies.
-     */
-    public HashMap<Character,Integer> map=new HashMap<>();
-    /**
-     * Data Structure for storing the Huffman Tree.
-     */
-    public Node tree;
-    /**
-     * Hashmap storing character and corresponding Huffman code.
-     */
-    public HashMap<Character, String> hash=new HashMap<>();
-    /**
-     * variable storing size of Serialised Hashmap.
-     */
-    long mapsize;
-
-    /**
-     * Byte Array storing file contents.
-     */
-    byte[] arr;
-
-    public void encodeText(String fileName) throws FileNotFoundException {
-        List<Byte> bytes=encodingLogic(arr,hash);
-        byte[] exportBytes=byteFromByteList(bytes);
-        writeToFile("Compressed.txt",true,exportBytes);
-
+public class TreeEncoder implements EncoderInterface {
+    @Override
+    public byte[] storeMap(HashMap<Character,Integer> map) throws IOException {
+        byte[] mapContent=getMapBytes(map);
+        byte[] header=(mapContent.length+"\n").getBytes();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
+        outputStream.write( header );
+        outputStream.write( mapContent );
+        byte exportBytes[] = outputStream.toByteArray( );
+        outputStream.close();
+        return exportBytes;
     }
-    public void storeMap(String compressedPath) {
-        try{
-            byte[] b=getMapBytes(map);
-            mapsize=b.length;
-            writeToFile(compressedPath,false,(mapsize+"\n").getBytes());
-            writeToFile(compressedPath,true,b);
-            }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+
+    @Override
     public List<Byte> encodingLogic(byte[] arr,HashMap<Character,String> hash){
         String byteArr="";
         String currentByte="";

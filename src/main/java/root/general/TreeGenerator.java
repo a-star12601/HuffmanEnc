@@ -1,5 +1,6 @@
 package root.general;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -14,7 +15,7 @@ public interface TreeGenerator {
      *
      * @param filename Name of input file
      */
-    void initialiseMap(String filename);
+    HashMap<Character,Integer> initialiseMap(byte[] arr) throws IOException, ClassNotFoundException ;
 
     /**
      * Generate the Tree from the Hashmap.
@@ -24,5 +25,5 @@ public interface TreeGenerator {
     /**
      * Generate character-mapping using tree.
      */
-    void generateTreeMap(Node tree);
+    HashMap<Character,String> generateTreeMap(Node tree);
 }

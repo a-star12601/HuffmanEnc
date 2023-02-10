@@ -10,39 +10,42 @@ import java.util.*;
 /**
  * Class for performing Huffman decoding.
  */
-public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
+public class HuffmanDecoding implements TreeGenerator {
 
+    int mapsize=0;
+    public int getMapSize(){
+        return mapsize;
+    }
     @Override
-    public void initialiseMap(String filename) {
-        try{
-            arr= readFile(filename);
-            int i=0;
-            for(byte x:arr){
-                if((char) x=='\n'){
-                    break;
-                }
-                else
-                    mapsize=mapsize*10+Integer.parseInt((char)x+"");
-                i++;
+    public HashMap<Character,Integer> initialiseMap(byte[] arr) throws IOException, ClassNotFoundException {
+        if(arr==null || arr.length==0){
+            throw new RuntimeException("Input file is Empty");
+        }
+        HashMap<Character,Integer> map=new HashMap<>();
+        int i=0;
+        for(byte x:arr){
+            if((char) x=='\n'){
+                break;
             }
-            mapsize=mapsize+i+1;
-            System.out.println(mapsize);
-            byte[] b1= Arrays.copyOfRange(arr,i+1,(int)mapsize);
-            ByteArrayInputStream bStream=new ByteArrayInputStream(b1);
-            ObjectInputStream serial=new ObjectInputStream(bStream);
-            map=(HashMap<Character, Integer>) serial.readObject();
-            serial.close();
-            bStream.close();
+            else
+                mapsize=mapsize*10+Integer.parseInt((char)x+"");
+            i++;
         }
-        catch (Exception e){
-              throw new RuntimeException(e);
-        }
+        mapsize=mapsize+i+1;
+        //System.out.println(mapsize);
+        byte[] b1= Arrays.copyOfRange(arr,i+1,(int)mapsize);
+        ByteArrayInputStream bStream=new ByteArrayInputStream(b1);
+        ObjectInputStream serial=new ObjectInputStream(bStream);
+        map=(HashMap<Character, Integer>) serial.readObject();
+        serial.close();
+        bStream.close();
+        return map;
     }
     @Override
     public Node initialiseTree(HashMap<Character,Integer> map) {
+        Node tree=new Node();
         if(map==null||map.size()==0){
-            System.out.println("Map is empty!!");
-            return new Node();
+            throw new RuntimeException("Map is empty!!");
         }
         PriorityQueue<Node> q=new PriorityQueue<>(map.size(),new Sort());
         for(Map.Entry<Character, Integer> entry:map.entrySet()) {
@@ -64,12 +67,13 @@ public class HuffmanDecoding extends TreeDecoder implements TreeGenerator {
             root=sum;
             q.add(sum);
         }
-        tree =root;
+        tree=root;
         return tree;
     }
 
     @Override
-    public void generateTreeMap(Node tree) {
+    public HashMap<Character,String> generateTreeMap(Node tree) {
+        return null;
  /*
         setBitsHash(tree, "", hash);
        for (Map.Entry<Character, String> e : hash.entrySet()) {
