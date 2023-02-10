@@ -24,13 +24,9 @@ $src/main/java/root/general/Node.java,8/c/8c6e5ae3b69676223a44635f58f3bf36fedc0
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 d
 4src/main/java/root/compression/EncoderInterface.java,1/7/17b000eae0850e78485f4699744830765af50c12
-]
--src/main/java/root/general/TreeGenerator.java,4/7/474314f2e5844b76c5e2bebd581daf3ae9e41d9d
 f
 6src/main/java/root/decompression/DecoderInterface.java,8/1/811ac8affa42fa4ffb34e860e294cb68968d9601
 8
 test.txt,4/b/4b6fcb2d521ef0fd442a5301e7932d16cc9f375a
 T
 $src/main/java/root/general/Sort.java,c/8/c8921d0d1d03e89ed7cdd116e6accea30126c4a5
-e
-5src/test/java/root/decompression/TreeDecoderTest.java,4/d/4d1e552e2d18e76089e5d19d97d3c618895d65d2

@@ -12,6 +12,9 @@ import java.util.*;
 public class HuffmanEncoding implements TreeGenerator {
 
     public HashMap<Character,Integer> initialiseMap(byte[] arr)throws IOException, ClassNotFoundException {
+        if(arr==null || arr.length==0){
+            throw new RuntimeException("Input file is Empty");
+        }
         HashMap<Character,Integer> map=new HashMap<>();
         for (byte b : arr) {
             char ch = (char) b;
@@ -22,6 +25,9 @@ public class HuffmanEncoding implements TreeGenerator {
     }
     @Override
     public Node initialiseTree(HashMap<Character,Integer> map) {
+        if(map==null||map.size()==0){
+            throw new RuntimeException("Map is empty!!");
+        }
         Node tree;
         PriorityQueue<Node> q=new PriorityQueue<>(map.size(),new Sort());
         for(Map.Entry<Character, Integer> entry:map.entrySet()) {

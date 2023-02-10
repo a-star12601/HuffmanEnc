@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import root.Main;
+import root.decompression.HuffmanDecoding;
 import root.general.FileOperations;
 import root.general.Node;
 
@@ -40,6 +41,19 @@ public class HuffmanEncodingTest {
         map.put('a',14);
         Assert.assertEquals("Map Doesn't Match",ActualMap, map);
     }
+    @Test
+    public void TestMapNullFile(){
+        byte[] arr=null;
+        enc=new HuffmanEncoding();
+        assertThrows(RuntimeException.class,()->{HashMap<Character,Integer> ActualMap=enc.initialiseMap(arr);});
+    }
+    @Test
+    public void TestMapEmptyFile(){
+        byte[] arr=new byte[0];
+        enc=new HuffmanEncoding();
+        assertThrows(RuntimeException.class,()->{HashMap<Character,Integer> ActualMap=enc.initialiseMap(arr);});
+    }
+
 
     @Test
     public void testInitialiseTreeForSingleNode() {
@@ -53,6 +67,18 @@ public class HuffmanEncodingTest {
         tree.Right=new Node();
         //System.out.println(enc.tree.Left);
         Assert.assertTrue(MatchTrees(ActualTree, tree));
+    }
+    @Test
+    public void TestInitialiseTreeNullNode(){
+        enc=new HuffmanEncoding();
+        Node tree=new Node();
+        assertThrows(RuntimeException.class,()->enc.initialiseTree(null));
+    }
+    @Test
+    public void TestInitialiseTreeEmptyMap(){
+        enc=new HuffmanEncoding();
+        Node tree=new Node();
+        assertThrows(RuntimeException.class,()->enc.initialiseTree(new HashMap<Character,Integer>()));
     }
     @Test
     public void testInitialiseTreeForMultipleNodes() {
